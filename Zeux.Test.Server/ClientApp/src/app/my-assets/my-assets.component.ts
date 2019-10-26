@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AssetsService, Asset, AssetType } from 'src/app/assets.service'
 
 @Component({
   selector: 'app-my-assets',
@@ -14,54 +15,24 @@ export class MyAssetsComponent implements OnInit {
   private assets: Array<Asset>;
 
   constructor(private route: ActivatedRoute,
-    private http: HttpClient,
-    private router: Router) { }
-    private httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+      private http: HttpClient,
+      private assetsService:  AssetsService,
+      private router: Router) { }
 
-  ngOnInit() {
+    ngOnInit() {
+        this.assetsService.getAssets();
+        this.assetsService.getAssetTypes().pipe().subscribe(data => { this.assetTypes = data});
+
+        this.assetsService.currentAssets.subscribe((dataAssets: Array<Asset>) => {
+            this.assets = dataAssets;
+        });
     this.type = this.route.snapshot.params.type;
-    this.reloadAssets();
 
-    const uriAssetTypes = '/api/asset/GetTypes';
 
-    this.http.get<Array<AssetType>>(uriAssetTypes, this.httpOptions)
-    .subscribe((dataAssetTypes: Array<AssetType>) => {
-        this.assetTypes = dataAssetTypes;
-      });
-
-    this.router.events
-    .subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.reloadAssets();
-    }});
+    //this.router.events.subscribe((event) => {
+    //  if (event instanceof NavigationEnd) {
+    //    this.reloadAssets();
+    //}});
   }
-
-  reloadAssets() {
-    const uriAsset = '/api/asset/Get/' + this.route.snapshot.params.type;
-    this.http.get<Array<Asset>>(uriAsset, this.httpOptions)
-    .subscribe((dataAssets: Array<Asset>) => {
-          this.assets = dataAssets;
-      });
-  }
-
 }
 
-export class AssetType {
-  constructor(
-    public id: number,
-    public name: string) { }
-}
-
-export class Asset {
-  constructor(
-    public id: number,
-    public name: string,
-    public percent: number,
-    public sum: number,
-    public type: AssetType,
-    public assetTypeName: string) { }
-}
