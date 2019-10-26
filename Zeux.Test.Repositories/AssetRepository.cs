@@ -10,12 +10,12 @@ namespace Zeux.Test.Repositories
 
         public async Task<IQueryable<Asset>> Get()
         {
-            return await Task.Run(() => _context.Assets);
+            return await Task.Run(() => _context.Assets.OrderBy(x => x.Name));
         }
 
         public async Task<IQueryable<Asset>> Get(string type)
         {
-            return await Task.Run(() => _context.Assets.Where(row => row.Type.Name.ToLower() == type.ToLower()));
+            return await Task.Run(() => _context.Assets.Where(row => row.Type.Name.ToLower() == type.ToLower()).OrderBy(x => x.Name));
         }
 
         public async Task<IQueryable<AssetType>> GetTypes()
