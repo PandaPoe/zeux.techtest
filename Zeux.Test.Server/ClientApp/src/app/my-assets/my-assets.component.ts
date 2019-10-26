@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { AssetsService, Asset, AssetType } from 'src/app/assets.service'
 
 @Component({
@@ -10,12 +9,10 @@ import { AssetsService, Asset, AssetType } from 'src/app/assets.service'
 })
 export class MyAssetsComponent implements OnInit {
 
-  private type: string;
   private assetTypes: Array<AssetType>;
   private assets: Array<Asset>;
 
   constructor(private route: ActivatedRoute,
-      private http: HttpClient,
       private assetsService:  AssetsService,
       private router: Router) { }
 
@@ -26,13 +23,11 @@ export class MyAssetsComponent implements OnInit {
         this.assetsService.currentAssets.subscribe((dataAssets: Array<Asset>) => {
             this.assets = dataAssets;
         });
-    this.type = this.route.snapshot.params.type;
 
-
-    //this.router.events.subscribe((event) => {
-    //  if (event instanceof NavigationEnd) {
-    //    this.reloadAssets();
-    //}});
+    this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+            this.route.data.subscribe(x => this.assets = x.items);
+    }});
   }
 }
 
