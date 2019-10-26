@@ -11,7 +11,7 @@
     <div *ngFor="let asset of assets" class="item"> 
       <div class="item-left">
         <div class="item-category">{{asset.type.name}}</div>
-        <div class="item-title">{{asset.name}}</div>
+        <div class="item-title">{{asset.name | titleCaseString}}</div>
         <div class="item-saving">%{{asset.percent * 100}}</div>
       </div>
       <div class="item-right">£{{asset.sum}}</div>

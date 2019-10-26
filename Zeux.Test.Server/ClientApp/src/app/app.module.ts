@@ -9,25 +9,27 @@ import { OpportunitiesComponent } from './opportunities/opportunities.component'
 import { MyAssetsComponent } from './my-assets/my-assets.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthInterceptor } from 'src/app/app.auth.interseptor';
+import { TitleCaseString } from './pipes/titlecase.pipe';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    OpportunitiesComponent,
-    MyAssetsComponent,
-    HeaderComponent
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        OpportunitiesComponent,
+        MyAssetsComponent,
+        HeaderComponent,
+        TitleCaseString
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserModule,
+        AppRoutingModule
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
