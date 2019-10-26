@@ -21,7 +21,7 @@ export class MyAssetsComponent implements OnInit {
         this.assetsService.getAssetTypes().pipe().subscribe(data => { this.assetTypes = data});
 
         this.assetsService.currentAssets.subscribe((dataAssets: Array<Asset>) => {
-            this.assets = dataAssets;
+            this.route.data.subscribe(x => this.assets = x.items);
         });
 
     this.router.events.subscribe((event) => {
